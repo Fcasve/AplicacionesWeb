@@ -32,9 +32,14 @@ app.get("/users/:id", async (req, res) => {
 });
 
 app.post("/users", async (req, res) => {
-  const newUser = new User({ ...req.body });
-  const insertedUser = await newUser.save();
-  return res.status(201).json(insertedUser);
+    try{
+        const newUser = new User({ ...req.body });
+        const insertedUser = await newUser.save();
+        return res.status(201).json(insertedUser);
+    }catch(error) {
+        return res.status(500).json({resultado: false, mensaje:error.message});
+    }
+
 });
 
 app.put("/users/:id", async (req, res) => {
@@ -67,9 +72,12 @@ app.get("/diags/:id", async (req, res) => {
   });
 
 app.post("/diags", async (req, res) => {
-    const newDiag = new Diag({ ...req.body });
+    try{const newDiag = new Diag({ ...req.body });
     const insertedDiag = await newDiag.save();
     return res.status(201).json(insertedDiag);
+    }catch(error) {
+        return res.status(500).json({resultado: false, mensaje:error.message});
+    }
   });
 
 app.put("/diags/:id", async (req, res) => {
@@ -92,9 +100,13 @@ app.get("/treats/:id", async (req, res) => {
   });
 
 app.post("/treats", async (req, res) => {
+    try{
     const newTreat = new Treat({ ...req.body });
     const insertedTreat = await newTreat.save();
-    return res.status(201).json(insertedTreat);
+    return res.status(201).json(insertedTreat);}
+    catch(error) {
+        return res.status(500).json({resultado: false, mensaje:error.message});
+    }
   });
 
 app.put("/treats/:id", async (req, res) => {
@@ -117,17 +129,21 @@ app.get("/meds/:id", async (req, res) => {
   });
 
 app.post("/meds", async (req, res) => {
+    try{
     const newMeds = new Meds({ ...req.body });
     const insertedMeds = await newMeds.save();
-    return res.status(201).json(insertedMeds);
+    return res.status(201).json(insertedMeds);}
+    catch(error) {
+        return res.status(500).json({resultado: false, mensaje:error.message});
+    }
   });
 
-    app.put("/meds/:id", async (req, res) => {
-        const { id } = req.params;
-        await Meds.updateOne({ id }, req.body);
-        const updatedMeds = await Meds.findById(id);
-        return res.status(200).json(updatedMeds); 
-    });
+app.put("/meds/:id", async (req, res) => {
+    const { id } = req.params;
+    await Meds.updateOne({ id }, req.body);
+    const updatedMeds = await Meds.findById(id);
+    return res.status(200).json(updatedMeds); 
+});
 
 
 const start = async () => {

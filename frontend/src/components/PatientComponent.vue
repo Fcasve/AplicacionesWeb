@@ -9,14 +9,27 @@
         </ul>
     
         <form v-on:submit='addPatient'>
-            <input type='number' v-model='newPatient.DNI' placeHolder='DNI'>
-            <input type='text' v-model='newPatient.name' placeHolder='name'>
-            <input type='text' v-model='newPatient.lastname' placeHolder='lastname'>
-            <input type='number' v-model='newPatient.age' placeHolder='age'>
-            <input type='text' v-model='newPatient.correo' placeHolder='correo'>
-            <input type='number' v-model='newPatient.cell' placeHolder='cell'>
+            <input type='text' v-model='newPatient.DNI' placeHolder='DNI'><br>
+            <input type='text' v-model='newPatient.name' placeHolder='name'><br>
+            <input type='text' v-model='newPatient.lastname' placeHolder='lastname'><br>
+            <input type='number' v-model='newPatient.age' placeHolder='age'><br>
+            <input type='text' v-model='newPatient.correo' placeHolder='correo'><br>
+            <input type='number' v-model='newPatient.cell' placeHolder='cell'><br>
             <button type='submit'> Agregar </button>
+            <button type='cPatient'> Consultar </button>
+
         </form> <br>
+
+    <!--       <form v-on:submit='getPatient'>
+            <input type='text' v-model='getPatient.DNI' placeHolder='DNI'><br>
+            <input type='text' v-model='getPatient.name' placeHolder='name'><br>
+            <input type='text' v-model='getPatient.lastname' placeHolder='lastname'><br>
+            <input type='number' v-model='getPatient.age' placeHolder='age'><br>
+            <input type='text' v-model='getPatient.correo' placeHolder='correo'><br>
+            <input type='number' v-model='getPatient.cell' placeHolder='cell'><br>
+            <button type='cPatient'> Consultar </button>
+
+        </form>-->
     </div>
 </template>
 
@@ -28,6 +41,7 @@ export default{
         return {            
             users: [],
             newPatient: {},
+            getPatient:{},
             backend_server: 'http://127.0.0.1:3000'
         }
     },
@@ -46,6 +60,22 @@ export default{
             });    
             
         },
+
+        getPatient(e){
+            e.preventDefault(); 
+            var config_request={'Content-Type': 'application/json','Access-Control-Allow-Origin': '*'}
+
+            axios.get(this.backend_server + '/users', this.newPatient, { config_request })
+            .then(res => {                                         
+                this.users.push(res.data);
+                this.newPatient = {};
+            })
+            .catch((error) => {
+                console.log(error)
+            });    
+            
+        },
+
        deletePatient(patient){
             var config_request={'Content-Type': 'application/json','Access-Control-Allow-Origin': '*'
         }
