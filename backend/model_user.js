@@ -31,6 +31,10 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  consult: {
+    type: [Number],
+    required: false,
+  },
 });
 
 const User = mongoose.model("User", UserSchema);

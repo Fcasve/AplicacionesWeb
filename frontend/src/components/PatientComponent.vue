@@ -3,7 +3,7 @@
         <h2>Pacientes</h2>
         <ul>
             <li v-for='patient in users'> 
-                {{patient.DNI}} - {{patient.name}} - {{ patient.lastname }} - {{ patient.age }} - {{ patient.correo }} - {{ patient.cell }} 
+                {{patient.DNI}} - {{patient.name}} - {{ patient.lastname }} - {{ patient.age }} - {{ patient.correo }} - {{ patient.cell }}
                 <button v-on:click='deletePatient(patient)'>x</button>
             </li>
         </ul>
@@ -15,21 +15,9 @@
             <input type='number' v-model='newPatient.age' placeHolder='age'><br>
             <input type='text' v-model='newPatient.correo' placeHolder='correo'><br>
             <input type='number' v-model='newPatient.cell' placeHolder='cell'><br>
-            <button type='submit'> Agregar </button>
-            <button type='cPatient'> Consultar </button>
+            <button class="button is-primary" type='submit'> Agregar </button>
 
         </form> <br>
-
-    <!--       <form v-on:submit='getPatient'>
-            <input type='text' v-model='getPatient.DNI' placeHolder='DNI'><br>
-            <input type='text' v-model='getPatient.name' placeHolder='name'><br>
-            <input type='text' v-model='getPatient.lastname' placeHolder='lastname'><br>
-            <input type='number' v-model='getPatient.age' placeHolder='age'><br>
-            <input type='text' v-model='getPatient.correo' placeHolder='correo'><br>
-            <input type='number' v-model='getPatient.cell' placeHolder='cell'><br>
-            <button type='cPatient'> Consultar </button>
-
-        </form>-->
     </div>
 </template>
 
@@ -61,20 +49,6 @@ export default{
             
         },
 
-        getPatient(e){
-            e.preventDefault(); 
-            var config_request={'Content-Type': 'application/json','Access-Control-Allow-Origin': '*'}
-
-            axios.get(this.backend_server + '/users', this.newPatient, { config_request })
-            .then(res => {                                         
-                this.users.push(res.data);
-                this.newPatient = {};
-            })
-            .catch((error) => {
-                console.log(error)
-            });    
-            
-        },
 
        deletePatient(patient){
             var config_request={'Content-Type': 'application/json','Access-Control-Allow-Origin': '*'
@@ -87,9 +61,21 @@ export default{
             .catch((error) => {
                 console.log(error)
             });  
-        }
-        
+        },
 
+        consultPatient(patient){
+            var config_request={'Content-Type': 'application/json','Access-Control-Allow-Origin': '*'
+        }
+
+            axios.get(this.backend_server + '/users/' + patient._id, {}, { config_request })
+            .then(res => {                                         
+                this.users.splice(this.users.indexOf(patient), 1);
+            })
+            .catch((error) => {
+                console.log(error)
+            });  
+        }
+      
 
     },
     created(){                
